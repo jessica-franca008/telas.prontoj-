@@ -14,6 +14,7 @@ function showScreen(screenId) {
   document.getElementById('screen5').style.display = 'none';
   document.getElementById('screen6').style.display = 'none';
   document.getElementById('screen7').style.display = 'none';
+  document.getElementById('screen8').style.display = 'none';
   
   // Mostra a tela solicitada
   document.getElementById(screenId).style.display = 'flex';
