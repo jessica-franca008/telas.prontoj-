@@ -63,13 +63,15 @@
     
     <!-- Tela principal do app -->
     <div id="screen4">
-      <!-- Topo -->
-      <div class="topo">
-        <div style="width:30px;"></div>
-        <div class="endereco">📍 Rua Exemplo, 123</div>
-        <div class="icones-topo">
-          <i class="bi bi-bell"></i>
-          <i class="bi bi-chat-dots"></i>
+      <!-- Topo vermelho igual ao de pedidos -->
+      <div class="pedidos-topo">
+        <div class="home-header">
+          <div style="width:30px;"></div>
+          <div class="home-endereco">📍 Rua Exemplo, 123</div>
+          <div class="home-icones">
+            <i class="bi bi-bell"></i>
+            <i class="bi bi-chat-dots"></i>
+          </div>
         </div>
       </div>
 
@@ -97,7 +99,7 @@
       <!-- Menu inferior -->
       <div class="menu-inferior">
         <button class="ativo"><i class="bi bi-house-door-fill"></i>Início</button>
-        <button><i class="bi bi-search"></i>Buscar</button>
+        <button onclick="showScreen('screen8')"><i class="bi bi-search"></i>Buscar</button>
         <button onclick="showScreen('screen5')"><i class="bi bi-bag-fill"></i>Pedidos</button>
         <button onclick="showScreen('screen7')"><i class="bi bi-person-circle"></i>Perfil</button>
       </div>
@@ -128,7 +130,7 @@
       <!-- Menu inferior -->
       <div class="menu-inferior">
         <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
-        <button><i class="bi bi-search"></i>Buscar</button>
+        <button onclick="showScreen('screen8')"><i class="bi bi-search"></i>Buscar</button>
         <button class="ativo"><i class="bi bi-bag-fill"></i>Pedidos</button>
         <button onclick="showScreen('screen7')"><i class="bi bi-person-circle"></i>Perfil</button>
       </div>
@@ -197,7 +199,7 @@
       <!-- Menu inferior -->
       <div class="menu-inferior">
         <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
-        <button><i class="bi bi-search"></i>Buscar</button>
+        <button onclick="showScreen('screen8')"><i class="bi bi-search"></i>Buscar</button>
         <button onclick="showScreen('screen5')"><i class="bi bi-bag-fill"></i>Pedidos</button>
         <button onclick="showScreen('screen7')"><i class="bi bi-person-circle"></i>Perfil</button>
       </div>
@@ -239,9 +241,77 @@
       <!-- Menu inferior -->
       <div class="menu-inferior">
         <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
-        <button><i class="bi bi-search"></i>Buscar</button>
+        <button onclick="showScreen('screen8')"><i class="bi bi-search"></i>Buscar</button>
         <button onclick="showScreen('screen5')"><i class="bi bi-bag-fill"></i>Pedidos</button>
         <button class="ativo"><i class="bi bi-person-circle"></i>Perfil</button>
+      </div>
+    </div>
+
+    <!-- Tela de pesquisa -->
+    <div id="screen8">
+      <!-- Topo vermelho igual ao de pedidos -->
+      <div class="pedidos-topo">
+        <div class="search-header">
+          <div class="search-back" onclick="showScreen('screen4')">
+            <i class="bi bi-arrow-left"></i>
+          </div>
+          <div class="search-title">Buscar</div>
+          <div class="search-icones">
+            <i class="bi bi-bell"></i>
+            <i class="bi bi-chat-dots"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de pesquisa -->
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Tem algo em mente?" class="search-input">
+        </div>
+      </div>
+
+      <!-- Conteúdo da pesquisa -->
+      <div class="search-content">
+        <!-- Categorias populares -->
+        <div class="search-section">
+          <h6 class="section-title">Categorias populares</h6>
+          <div class="categories-grid">
+            <div class="category-item">
+              <div class="category-icon">
+                <i class="bi bi-egg-fried"></i>
+              </div>
+              <span>Restaurantes</span>
+            </div>
+            <div class="category-item">
+              <div class="category-icon">
+                <i class="bi bi-cart"></i>
+              </div>
+              <span>Mercado</span>
+            </div>
+            <div class="category-item">
+              <div class="category-icon">
+                <i class="bi bi-hospital"></i>
+              </div>
+              <span>Farmácia</span>
+            </div>
+            <div class="category-item">
+              <div class="category-icon">
+                <i class="bi bi-cup-straw"></i>
+              </div>
+              <span>Bebidas</span>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu inferior -->
+      <div class="menu-inferior">
+        <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
+        <button class="ativo"><i class="bi bi-search"></i>Buscar</button>
+        <button onclick="showScreen('screen5')"><i class="bi bi-bag-fill"></i>Pedidos</button>
+        <button onclick="showScreen('screen7')"><i class="bi bi-person-circle"></i>Perfil</button>
       </div>
     </div>
   </div>
