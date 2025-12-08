@@ -211,18 +211,50 @@
                         <span class="ms-2">Editar Perfil</span>
                     </div>
                     <div>
-                        <button class="btn-save" onclick="showScreen('screen7')">Salvar</button>
+                        <button class="btn-save" onclick="saveProfile()">Salvar</button>
+                    </div>
+                </div>
+                <div class="profile-picture-section">
+                    <div class="profile-picture-container">
+                        <img src="https://i.postimg.cc/9MKDXQKZ/2025-08-24-15-05.png" alt="Foto perfil" id="profile-picture">
+                        <button class="btn-change-photo" onclick="changeProfilePicture()">
+                            <i class="bi bi-camera-fill"></i>
+                        </button>
                     </div>
                 </div>
                 <div class="edit-form-container">
-                    <input type="text" id="edit-name" placeholder="Nome completo" value="Mariana">
-                    <input type="tel" id="edit-phone" placeholder="Telefone" value="(89) 994856218">
-                    <input type="email" id="edit-email" placeholder="Email" value="mariana@email.com">
-                    <input type="text" id="edit-cep" placeholder="CEP" value="64605500">
-                    <input type="text" id="edit-address" placeholder="Endereço" value="Rua Projetada, 132 Quadra 5, Casa 15">
-                    <input type="text" id="edit-neighborhood" placeholder="Bairro e Cidade" value="Bairro Pantanal, Picos - PI">
-                    <input type="password" id="edit-password" placeholder="Nova Senha (opcional)">
-                    <input type="password" id="edit-confirm-password" placeholder="Confirmar Nova Senha">
+                    <div class="form-group">
+                        <label for="edit-name">Nome completo</label>
+                        <input type="text" id="edit-name" placeholder="Digite seu nome completo" value="Mariana">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-phone">Telefone</label>
+                        <input type="tel" id="edit-phone" placeholder="Digite seu telefone" value="(89) 994856218">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-email">Email</label>
+                        <input type="email" id="edit-email" placeholder="Digite seu email" value="mariana@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-cep">CEP</label>
+                        <input type="text" id="edit-cep" placeholder="Digite seu CEP" value="64605500" onblur="searchCEP(this.value)">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-address">Endereço</label>
+                        <input type="text" id="edit-address" placeholder="Rua, número e complemento" value="Rua Projetada, 132 Quadra 5, Casa 15">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-neighborhood">Bairro e Cidade</label>
+                        <input type="text" id="edit-neighborhood" placeholder="Bairro e cidade" value="Bairro Pantanal, Picos - PI">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-password">Nova Senha (opcional)</label>
+                        <input type="password" id="edit-password" placeholder="Digite uma nova senha">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-confirm-password">Confirmar Nova Senha</label>
+                        <input type="password" id="edit-confirm-password" placeholder="Confirme a nova senha">
+                    </div>
                 </div>
                 <div class="menu-inferior">
                     <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
