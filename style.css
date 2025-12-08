@@ -84,11 +84,13 @@ body {
     margin: 0;
     font-size: 32px;
     font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .top p {
     margin: 8px 0 0;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .bottom {
@@ -106,7 +108,15 @@ body {
     padding: 16px 45px;
     border-radius: 30px;
     font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+    background: #333;
+    transform: translateY(-2px);
 }
 
 #screen2 {
@@ -155,11 +165,13 @@ body {
     border: none;
     border-radius: 25px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .cliente {
     background: #fff;
     color: #666;
+    border: 1px solid #ddd;
 }
 
 .empresa {
@@ -176,6 +188,7 @@ body {
 }
 
 .footer a {
+    text-decoration: none;
     color: #444;
     cursor: pointer;
 }
@@ -216,27 +229,40 @@ body {
     padding: 15px;
     align-items: center;
     background: #e30613;
+    overflow-y: auto;
 }
 
 input {
     width: 90%;
+    max-width: 320px;
     margin: 8px 0;
     padding: 12px;
     border-radius: 25px;
     border: none;
+    outline: none;
     font-size: 15px;
+}
+
+input::placeholder {
+    color: #999;
 }
 
 .btn-cadastro {
     width: 90%;
+    max-width: 320px;
     margin-top: 15px;
     padding: 14px;
     font-size: 16px;
     border: none;
     border-radius: 25px;
     cursor: pointer;
+    font-weight: bold;
     background: #f4b000;
     color: #000;
+}
+
+.btn-cadastro:hover {
+    background: #e5a500;
 }
 
 #screen4 {
@@ -255,6 +281,7 @@ input {
 
 .home-endereco {
     font-size: 14px;
+    font-weight: bold;
     text-align: center;
     flex-grow: 1;
 }
@@ -267,11 +294,13 @@ input {
 .home-icones i {
     font-size: 18px;
     color: white;
+    cursor: pointer;
 }
 
 .container {
     flex-grow: 1;
     padding: 15px;
+    overflow-y: auto;
 }
 
 .categoria-btn {
@@ -279,6 +308,7 @@ input {
     border-radius: 12px;
     padding: 15px;
     text-align: center;
+    font-weight: bold;
     font-size: 13px;
     color: #000;
 }
@@ -295,6 +325,7 @@ input {
     border-radius: 12px;
     padding: 12px;
     text-align: center;
+    font-weight: bold;
     font-size: 12px;
     color: #000;
 }
@@ -306,11 +337,14 @@ input {
 }
 
 .menu-inferior {
+    position: sticky;
+    bottom: 0;
     background: #f8f9fa;
     border-top: 1px solid #ccc;
     display: flex;
     justify-content: space-around;
     padding: 6px 0;
+    margin-top: auto;
 }
 
 .menu-inferior button {
@@ -321,6 +355,7 @@ input {
     color: #444;
     cursor: pointer;
     flex: 1;
+    padding: 5px;
 }
 
 .menu-inferior i {
@@ -341,6 +376,7 @@ input {
 .pedidos-topo {
     background: #e30613;
     color: white;
+    font-weight: bold;
     text-align: center;
     padding: 10px;
 }
@@ -352,6 +388,8 @@ input {
     margin: 10px;
     padding: 10px;
     align-items: center;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .pedido-card img {
@@ -369,6 +407,7 @@ input {
 .pedido-info h5 {
     margin: 0;
     font-size: 16px;
+    font-weight: bold;
     color: #663300;
 }
 
@@ -390,12 +429,16 @@ input {
 }
 
 .favorito {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     color: #e30613;
     font-size: 18px;
 }
 
 .conteudo-pedidos {
     flex: 1;
+    overflow-y: auto;
 }
 
 #screen6 {
@@ -413,9 +456,15 @@ input {
     justify-content: space-between;
 }
 
+.chat-header h6 {
+    margin: 0;
+    font-weight: bold;
+}
+
 .chat-body {
     flex: 1;
     padding: 10px;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -474,6 +523,7 @@ input {
     border-radius: 20px;
     border: 1px solid #ccc;
     padding: 5px 10px;
+    outline: none;
 }
 
 .chat-footer button {
@@ -483,6 +533,9 @@ input {
     border-radius: 50%;
     width: 36px;
     height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .audio-btn {
@@ -492,6 +545,10 @@ input {
     border-radius: 50%;
     width: 36px;
     height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .recording-indicator {
@@ -500,12 +557,14 @@ input {
     bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
-    background: #e30613;
+    background: rgba(227, 6, 19, 0.95);
     color: white;
     padding: 15px;
     border-radius: 20px;
     align-items: center;
     gap: 10px;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .recording-animation {
@@ -513,6 +572,13 @@ input {
     height: 20px;
     background: #ff4444;
     border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 .stop-recording-btn {
@@ -522,6 +588,10 @@ input {
     border-radius: 50%;
     width: 30px;
     height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .audio-message {
@@ -529,11 +599,16 @@ input {
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    padding: 10px 15px;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 20px;
-    color: #495057;
+    padding: 10px 15px !important;
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 20px !important;
+    color: #495057 !important;
+    min-width: 120px;
+}
+
+.audio-message.playing {
+    background: #e9ecef !important;
 }
 
 .audio-message i {
@@ -544,6 +619,17 @@ input {
 .audio-duration {
     font-size: 12px;
     color: #6c757d;
+    margin-left: auto;
+}
+
+.msg-cliente .audio-message {
+    background: #fff !important;
+    border: 1px solid #e30613 !important;
+    color: #e30613 !important;
+}
+
+.msg-cliente .audio-message i {
+    color: #e30613;
 }
 
 #screen7 {
@@ -583,6 +669,7 @@ input {
     align-items: center;
     margin-bottom: 15px;
     font-size: 16px;
+    font-weight: 500;
     color: #e30613;
     cursor: pointer;
 }
@@ -590,6 +677,11 @@ input {
 .options-list i {
     font-size: 24px;
     margin-right: 10px;
+    color: #000;
+}
+
+.nome-clique {
+    cursor: pointer;
 }
 
 #screen8 {
@@ -609,10 +701,20 @@ input {
 .search-back {
     width: 30px;
     height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.search-back i {
+    font-size: 18px;
+    color: white;
 }
 
 .search-title {
     font-size: 18px;
+    font-weight: bold;
     flex: 1;
     text-align: center;
 }
@@ -622,9 +724,16 @@ input {
     gap: 15px;
 }
 
+.search-icones i {
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+}
+
 .search-container {
     padding: 15px;
     background: white;
+    border-bottom: 1px solid #eee;
 }
 
 .search-bar {
@@ -633,23 +742,34 @@ input {
     background: #f8f9fa;
     border-radius: 25px;
     padding: 12px 20px;
+    border: 1px solid #e9ecef;
 }
 
 .search-bar i {
     color: #6c757d;
     margin-right: 10px;
+    font-size: 16px;
 }
 
 .search-input {
     flex: 1;
     border: none;
     background: transparent;
+    outline: none;
+    font-size: 16px;
+    color: #495057;
+}
+
+.search-input::placeholder {
+    color: #6c757d;
     font-size: 16px;
 }
 
 .search-content {
     flex: 1;
+    overflow-y: auto;
     padding: 20px 15px;
+    background: white;
 }
 
 .search-section {
@@ -657,6 +777,7 @@ input {
 }
 
 .section-title {
+    font-weight: bold;
     color: #e30613;
     margin-bottom: 15px;
     font-size: 16px;
@@ -676,6 +797,14 @@ input {
     background: #f8f9fa;
     border-radius: 15px;
     text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #e9ecef;
+}
+
+.category-item:hover {
+    background: #e9ecef;
+    transform: translateY(-2px);
 }
 
 .category-icon {
@@ -697,6 +826,7 @@ input {
 
 .category-item span {
     font-size: 12px;
+    font-weight: 500;
     color: #495057;
 }
 
@@ -712,28 +842,89 @@ input {
     color: white;
     font-size: 18px;
     cursor: pointer;
+    padding: 5px;
 }
 
 .btn-save {
     background: #f4b000;
     color: white;
     border: none;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background: #e5a500;
+}
+
+.profile-picture-section {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+.profile-picture-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.profile-picture-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e30613;
+}
+
+.btn-change-photo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #e30613;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
 .edit-form-container {
     flex: 1;
-    padding: 15px;
+    padding: 20px;
+    overflow-y: auto;
 }
 
-.edit-form-container input {
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-group input {
     width: 100%;
-    margin: 8px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 14px;
+    background: white;
+}
+
+.form-group input:focus {
+    border-color: #e30613;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(227, 6, 19, 0.1);
 }
