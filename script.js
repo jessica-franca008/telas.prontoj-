@@ -147,46 +147,32 @@ function playAudio(element) {
 
 function showEditProfile() {
     showScreen('screen9');
-    loadProfileData();
-}
-
-function loadProfileData() {
-    const savedProfile = localStorage.getItem('userProfile');
-    if (savedProfile) {
-        const userData = JSON.parse(savedProfile);
-        document.getElementById('edit-name').value = userData.name;
-        document.getElementById('edit-phone').value = userData.phone;
-        document.getElementById('edit-email').value = userData.email;
-        document.getElementById('edit-cep').value = userData.cep;
-        document.getElementById('edit-address').value = userData.address;
-        document.getElementById('edit-neighborhood').value = userData.neighborhood;
-    } else {
-        document.getElementById('edit-name').value = "Mariana";
-        document.getElementById('edit-phone').value = "(89) 994856218";
-        document.getElementById('edit-email').value = "mariana@email.com";
-        document.getElementById('edit-cep').value = "64605500";
-        document.getElementById('edit-address').value = "Rua Projetada, 132 Quadra 5, Casa 15";
-        document.getElementById('edit-neighborhood').value = "Bairro Pantanal, Picos - PI";
-    }
+    
+    document.getElementById('edit-name').value = "Mariana";
+    document.getElementById('edit-phone').value = "(89) 994856218";
+    document.getElementById('edit-email').value = "mariana@email.com";
+    document.getElementById('edit-cep').value = "64605500";
+    document.getElementById('edit-address').value = "Rua Projetada, 132 Quadra 5, Casa 15";
+    document.getElementById('edit-neighborhood').value = "Bairro Pantanal, Picos - PI";
+    document.getElementById('edit-password').value = "";
+    document.getElementById('edit-confirm-password').value = "";
 }
 
 function saveProfile() {
-    const userData = {
-        name: document.getElementById('edit-name').value.trim(),
-        phone: document.getElementById('edit-phone').value.trim(),
-        email: document.getElementById('edit-email').value.trim(),
-        cep: document.getElementById('edit-cep').value.trim(),
-        address: document.getElementById('edit-address').value.trim(),
-        neighborhood: document.getElementById('edit-neighborhood').value.trim()
-    };
+    const name = document.getElementById('edit-name').value.trim();
+    const phone = document.getElementById('edit-phone').value.trim();
+    const email = document.getElementById('edit-email').value.trim();
+    const cep = document.getElementById('edit-cep').value.trim();
+    const address = document.getElementById('edit-address').value.trim();
+    const neighborhood = document.getElementById('edit-neighborhood').value.trim();
 
-    if (!userData.name || !userData.phone || !userData.email || !userData.cep || !userData.address || !userData.neighborhood) {
+    if (!name || !phone || !email || !cep || !address || !neighborhood) {
         alert('Por favor, preencha todos os campos obrigatórios.');
         return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(userData.email)) {
+    if (!emailRegex.test(email)) {
         alert('Por favor, insira um email válido.');
         return;
     }
@@ -203,33 +189,9 @@ function saveProfile() {
             alert('A senha deve ter pelo menos 6 caracteres.');
             return;
         }
-        userData.password = newPassword;
     }
 
-    localStorage.setItem('userProfile', JSON.stringify(userData));
-    
-    updateProfileScreen(userData);
-    
     showScreen('screen7');
-    
-    alert('Perfil atualizado com sucesso!');
-}
-
-function updateProfileScreen(userData) {
-    const profileName = document.querySelector('#screen7 .top-bar span');
-    if (profileName) {
-        profileName.textContent = userData.name + ' - Cliente';
-    }
-    
-    const userInfo = document.querySelector('#screen7 .user-info');
-    if (userInfo) {
-        userInfo.innerHTML = `
-            <p>${userData.phone}</p>
-            <p>${userData.address}<br>
-               ${userData.neighborhood}<br>
-               CEP: ${userData.cep}</p>
-        `;
-    }
 }
 
 async function searchCEP(cep) {
@@ -246,7 +208,6 @@ async function searchCEP(cep) {
             }
         } catch (error) {
             console.error('Erro ao buscar CEP:', error);
-            alert('Erro ao buscar CEP. Verifique a conexão.');
         }
     }
 }
@@ -274,8 +235,6 @@ function changeProfilePicture() {
                 if (profilePicMain) {
                     profilePicMain.src = e.target.result;
                 }
-                
-                localStorage.setItem('profilePicture', e.target.result);
             };
             reader.readAsDataURL(file);
         }
@@ -287,20 +246,6 @@ function changeProfilePicture() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const savedPicture = localStorage.getItem('profilePicture');
-    if (savedPicture) {
-        const profilePictures = document.querySelectorAll('#profile-picture, #screen7 .top-bar img');
-        profilePictures.forEach(img => {
-            img.src = savedPicture;
-        });
-    }
-    
-    const savedProfile = localStorage.getItem('userProfile');
-    if (savedProfile) {
-        const userData = JSON.parse(savedProfile);
-        updateProfileScreen(userData);
-    }
-    
     const messageInput = document.getElementById('message-input');
     if (messageInput) {
         messageInput.addEventListener('keypress', function(e) {
