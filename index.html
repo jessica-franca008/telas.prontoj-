@@ -6,11 +6,18 @@
     <title>ProntosJá</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="phone-container">
         <div class="phone">
+            <!-- TELA 1 - INÍCIO -->
             <div id="screen1">
                 <div class="top">
                     <img src="https://i.postimg.cc/wxGWpZzD/2025-08-24-16-54.png">
@@ -22,6 +29,7 @@
                 </div>
             </div>
             
+            <!-- TELA 2 - LOGIN (ATUALIZADA COM GOOGLE) -->
             <div id="screen2">
                 <div class="header">
                     <h1>PRONTOS<span>JÁ</span></h1>
@@ -30,12 +38,19 @@
                 <div class="content">
                     <button class="btn-login cliente" onclick="showScreen('screen3')">Entrar como cliente</button>
                     <button class="btn-login empresa">Entrar como empresa</button>
+                    
+                    <!-- BOTÃO DO GOOGLE ADICIONADO -->
+                    <button class="btn-login google-btn" onclick="loginWithGoogle()">
+                        <i class="bi bi-google"></i> Entrar com Google
+                    </button>
+                    
                 </div>
                 <div class="footer">
                     <a>Continuar como visitante</a>
                 </div>
             </div>
             
+            <!-- TELA 3 - CADASTRO -->
             <div id="screen3">
                 <div class="cadastro-header">
                     <h1>PRONTOS<span>JÁ</span></h1>
@@ -53,6 +68,7 @@
                 </div>
             </div>
             
+            <!-- TELA 4 - INÍCIO/PRINCIPAL -->
             <div id="screen4">
                 <div class="pedidos-topo">
                     <div class="home-header">
@@ -88,6 +104,7 @@
                 </div>
             </div>
             
+            <!-- TELA 5 - MEUS PEDIDOS -->
             <div id="screen5">
                 <div class="pedidos-topo">MEUS PEDIDOS</div>
                 <div class="conteudo-pedidos">
@@ -112,6 +129,7 @@
                 </div>
             </div>
             
+            <!-- TELA 6 - CHAT -->
             <div id="screen6">
                 <div class="chat-header">
                     <div class="d-flex align-items-center">
@@ -168,6 +186,7 @@
                 </div>
             </div>
             
+            <!-- TELA 7 - PERFIL -->
             <div id="screen7">
                 <div class="top-bar">
                     <div class="d-flex align-items-center">
@@ -193,6 +212,8 @@
                     <div class="item" onclick="showEditProfile()"><i class="bi bi-pencil-square"></i> Editar perfil</div>
                     <div class="item"><i class="bi bi-file-text"></i> Termos de uso</div>
                     <div class="item"><i class="bi bi-wallet2"></i> Forma de pagamento</div>
+                    <!-- BOTÃO DE LOGOUT ADICIONADO -->
+                    <div class="item" onclick="logout()"><i class="bi bi-box-arrow-right text-danger"></i> Sair</div>
                 </div>
                 <div class="menu-inferior">
                     <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
@@ -202,6 +223,7 @@
                 </div>
             </div>
 
+            <!-- TELA 9 - EDITAR PERFIL -->
             <div id="screen9">
                 <div class="top-bar">
                     <div class="d-flex align-items-center">
@@ -264,6 +286,7 @@
                 </div>
             </div>
             
+            <!-- TELA 8 - BUSCAR -->
             <div id="screen8">
                 <div class="pedidos-topo">
                     <div class="search-header">
