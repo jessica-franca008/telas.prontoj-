@@ -6,12 +6,6 @@
     <title>ProntosJá</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    
-    <!-- FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,7 +23,7 @@
                 </div>
             </div>
             
-            <!-- TELA 2 - LOGIN (ATUALIZADA COM GOOGLE) -->
+            <!-- TELA 2 - LOGIN -->
             <div id="screen2">
                 <div class="header">
                     <h1>PRONTOS<span>JÁ</span></h1>
@@ -39,8 +33,8 @@
                     <button class="btn-login cliente" onclick="showScreen('screen3')">Entrar como cliente</button>
                     <button class="btn-login empresa">Entrar como empresa</button>
                     
-                    <!-- BOTÃO DO GOOGLE ADICIONADO -->
-                    <button class="btn-login google-btn" onclick="loginWithGoogle()">
+                    <!-- BOTÃO DO GOOGLE -->
+                    <button class="btn-login google-btn">
                         <i class="bi bi-google"></i> Entrar com Google
                     </button>
                     
@@ -68,7 +62,7 @@
                 </div>
             </div>
             
-            <!-- TELA 4 - INÍCIO/PRINCIPAL -->
+            <!-- TELA 4 - INÍCIO -->
             <div id="screen4">
                 <div class="pedidos-topo">
                     <div class="home-header">
@@ -129,27 +123,34 @@
                 </div>
             </div>
             
-            <!-- TELA 6 - CHAT -->
+            <!-- TELA 6 - CHAT SIMPLIFICADO SEM TELEFONE -->
             <div id="screen6">
-                <div class="chat-header">
-                    <div class="d-flex align-items-center">
-                        <img src="https://i.postimg.cc/9MKDXQKZ/2025-08-24-15-05.png" alt="Cliente" class="rounded-circle me-2">
-                        <h6 class="nome-clique" onclick="showScreen('screen7')">Mariana - Cliente</h6>
+                <!-- CABEÇALHO LIMPO -->
+                <div class="chat-header-limpo">
+                    <button class="btn-voltar" onclick="showScreen('screen5')">
+                        <i class="bi bi-arrow-left"></i>
+                    </button>
+                    <div class="chat-info-limpo">
+                        <img src="https://i.postimg.cc/9MKDXQKZ/2025-08-24-15-05.png" alt="Cliente" class="chat-foto">
+                        <div class="chat-detalhes-limpo">
+                            <h6 class="chat-nome">Mariana Santos</h6>
+                            <small class="chat-status">Cliente</small>
+                        </div>
                     </div>
-                    <div>
-                        <i class="bi bi-bell-fill me-2"></i>
-                        <i class="bi bi-chat-dots-fill me-2"></i>
-                        <i class="bi bi-list"></i>
-                    </div>
+                    <!-- SEM ÍCONE DE TELEFONE -->
                 </div>
+                
+                <!-- CORPO DO CHAT -->
                 <div class="chat-body" id="chat-body">
                     <div class="msg msg-cliente">
                         <img src="https://i.postimg.cc/9MKDXQKZ/2025-08-24-15-05.png" alt="Cliente">
                         <div class="texto"><b>Boa tarde!</b> Você já está a caminho?</div>
+                        <span class="msg-hora">15:30</span>
                     </div>
                     <div class="msg msg-entregador">
                         <i class="bi bi-person-circle fs-4"></i>
                         <div class="texto">Sim, já estou indo! Previsão de chegada em 10 minutos</div>
+                        <span class="msg-hora">15:31</span>
                     </div>
                     <div class="msg msg-cliente">
                         <img src="https://i.postimg.cc/9MKDXQKZ/2025-08-24-15-05.png" alt="Cliente">
@@ -158,19 +159,27 @@
                             <span>Áudio</span>
                             <div class="audio-duration">0:05</div>
                         </div>
+                        <span class="msg-hora">15:32</span>
                     </div>
                     <div class="msg msg-entregador">
                         <i class="bi bi-person-circle fs-4"></i>
                         <div class="texto">Claro, vou deixar na portaria!</div>
+                        <span class="msg-hora">15:33</span>
                     </div>
                 </div>
-                <div class="chat-footer">
+                
+                <!-- RODAPÉ DO CHAT (SOMENTE MICROFONE + INPUT + ENVIAR) -->
+                <div class="chat-footer-limpo">
                     <button class="audio-btn" onclick="toggleAudioRecording()">
                         <i class="bi bi-mic-fill"></i>
                     </button>
-                    <input type="text" id="message-input" placeholder="Escreva uma mensagem...">
-                    <button onclick="sendMessage()"><i class="bi bi-send-fill"></i></button>
+                    <input type="text" id="message-input" placeholder="Digite sua mensagem...">
+                    <button class="chat-enviar-btn" onclick="sendMessage()">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
                 </div>
+                
+                <!-- INDICADOR DE GRAVAÇÃO -->
                 <div id="recording-indicator" class="recording-indicator">
                     <div class="recording-animation"></div>
                     <span>Gravando áudio... Clique para enviar</span>
@@ -178,6 +187,8 @@
                         <i class="bi bi-stop-fill"></i>
                     </button>
                 </div>
+                
+                <!-- MENU INFERIOR -->
                 <div class="menu-inferior">
                     <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
                     <button onclick="showScreen('screen8')"><i class="bi bi-search"></i>Buscar</button>
@@ -212,8 +223,6 @@
                     <div class="item" onclick="showEditProfile()"><i class="bi bi-pencil-square"></i> Editar perfil</div>
                     <div class="item"><i class="bi bi-file-text"></i> Termos de uso</div>
                     <div class="item"><i class="bi bi-wallet2"></i> Forma de pagamento</div>
-                    <!-- BOTÃO DE LOGOUT ADICIONADO -->
-                    <div class="item" onclick="logout()"><i class="bi bi-box-arrow-right text-danger"></i> Sair</div>
                 </div>
                 <div class="menu-inferior">
                     <button onclick="showScreen('screen4')"><i class="bi bi-house-door-fill"></i>Início</button>
