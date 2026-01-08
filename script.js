@@ -1,16 +1,3 @@
-const firebaseConfig = {
-    apiKey: "AIzaSyDYgfZX_8B6s0u60Tracnt-y21v4qKz1kM",
-    authDomain: "app-prontosja.firebaseapp.com",
-    projectId: "app-prontosja",
-    storageBucket: "app-prontosja.firebasestorage.app",
-    messagingSenderId: "68b611094886",
-    appId: "11:68b611094886.web:589ee0d47451771eefad47"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
@@ -19,76 +6,10 @@ let audioElement;
 function showScreen(screenId) {
     const screens = ['screen1', 'screen2', 'screen3', 'screen4', 'screen5', 'screen6', 'screen7', 'screen8', 'screen9'];
     screens.forEach(screen => {
-        const el = document.getElementById(screen);
-        if (el) el.style.display = 'none';
+        document.getElementById(screen).style.display = 'none';
     });
     
-    const targetScreen = document.getElementById(screenId);
-    if (targetScreen) {
-        targetScreen.style.display = 'flex';
-    }
-}
-
-async function loginWithGoogle() {
-    try {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        provider.addScope('email');
-        provider.addScope('profile');
-        
-        const result = await auth.signInWithPopup(provider);
-        const user = result.user;
-        
-        await saveUserToFirestore(user);
-        
-        showScreen('screen4');
-        alert(`Bem-vindo(a), ${user.displayName}!`);
-        
-    } catch (error) {
-        console.error("Erro no login:", error);
-        alert("Erro ao fazer login: " + error.message);
-    }
-}
-
-async function saveUserToFirestore(user) {
-    try {
-        const userRef = db.collection('users').doc(user.uid);
-        
-        const userData = {
-            uid: user.uid,
-            nome: user.displayName,
-            email: user.email,
-            foto: user.photoURL,
-            telefone: user.phoneNumber || '',
-            dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
-            ultimoLogin: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        
-        await userRef.set(userData, { merge: true });
-        console.log("✅ Usuário salvo no Firestore");
-        
-    } catch (error) {
-        console.error("Erro ao salvar usuário:", error);
-    }
-}
-
-function checkAuthState() {
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            console.log("Usuário já logado:", user.email);
-            showScreen('screen4');
-        } else {
-            console.log("Nenhum usuário logado");
-        }
-    });
-}
-
-function logout() {
-    auth.signOut().then(() => {
-        showScreen('screen2');
-        alert("Logout realizado com sucesso!");
-    }).catch((error) => {
-        console.error("Erro no logout:", error);
-    });
+    document.getElementById(screenId).style.display = 'flex';
 }
 
 function sendMessage() {
@@ -105,6 +26,7 @@ function sendMessage() {
     messageDiv.innerHTML = `
         <i class="bi bi-person-circle fs-4"></i>
         <div class="texto">${message}</div>
+        <span class="msg-hora">${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}</span>
     `;
     
     chatBody.appendChild(messageDiv);
@@ -118,6 +40,7 @@ function sendMessage() {
         responseDiv.innerHTML = `
             <img src="https://i.postimg.cc/9MKDXQKZ/2025-08-24-15-05.png" alt="Cliente">
             <div class="texto">Olá, em que posso ajudar?</div>
+            <span class="msg-hora">${new Date().getHours()}:${(new Date().getMinutes() + 1).toString().padStart(2, '0')}</span>
         `;
         
         chatBody.appendChild(responseDiv);
@@ -184,6 +107,7 @@ function sendAudioMessage(audioBlob) {
             <span>Áudio</span>
             <div class="audio-duration">0:05</div>
         </div>
+        <span class="msg-hora">${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}</span>
     `;
     
     chatBody.appendChild(messageDiv);
@@ -320,8 +244,6 @@ function changeProfilePicture() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    checkAuthState();
-    
     const messageInput = document.getElementById('message-input');
     if (messageInput) {
         messageInput.addEventListener('keypress', function(e) {
