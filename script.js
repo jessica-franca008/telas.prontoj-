@@ -1,264 +1,372 @@
+// SISTEMA DE NAVEGAÇÃO ENTRE TELAS
+function mudarTela(idTela) {
+    document.querySelectorAll('.tela').forEach(tela => {
+        tela.classList.remove('ativa');
+    });
+    
+    document.getElementById(idTela).classList.add('ativa');
+    window.scrollTo(0, 0);
+    
+    if (idTela === 'tela-8') {
+        setTimeout(inicializarChat, 100);
+    }
+    
+    if (idTela === 'tela-10') {
+        setTimeout(inicializarSwitchLoja, 100);
+    }
+    
+    if (idTela === 'tela-11') {
+        setTimeout(inicializarBuscaCardapio, 100);
+    }
+    
+    if (idTela === 'tela-12') {
+        setTimeout(() => {
+            inicializarBuscaMensagens();
+            inicializarCliquesMensagens();
+        }, 100);
+    }
+    
+    if (idTela === 'tela-13') {
+        setTimeout(inicializarAjustes, 100);
+    }
+}
+
+// FUNCIONALIDADE DO CHAT
 let mediaRecorder;
 let audioChunks = [];
 let isRecording = false;
-let audioElement;
+let audioStream;
 
-function showScreen(screenId) {
-    const screens = ['screen1', 'screen2', 'screen3', 'screen4', 'screen5', 'screen6', 'screen7', 'screen8', 'screen9'];
-    screens.forEach(screen => {
-        document.getElementById(screen).style.display = 'none';
+function inicializarChat() {
+    const chatInput = document.getElementById('chat-input');
+    const recordBtn = document.getElementById('record-btn');
+    const sendBtn = document.getElementById('send-btn');
+    
+    if (!chatInput || !recordBtn || !sendBtn) return;
+    
+    const newSendBtn = sendBtn.cloneNode(true);
+    sendBtn.parentNode.replaceChild(newSendBtn, sendBtn);
+    
+    const newRecordBtn = recordBtn.cloneNode(true);
+    recordBtn.parentNode.replaceChild(newRecordBtn, recordBtn);
+    
+    const finalSendBtn = document.getElementById('send-btn');
+    const finalRecordBtn = document.getElementById('record-btn');
+    
+    finalSendBtn.addEventListener('click', function() {
+        const input = document.getElementById('chat-input');
+        if (input && input.value.trim()) {
+            enviarMensagem(input.value);
+            input.value = '';
+        }
     });
     
-    document.getElementById(screenId).style.display = 'flex';
+    if (chatInput) {
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                enviarMensagem(this.value);
+                this.value = '';
+            }
+        });
+    }
+    
+    finalRecordBtn.addEventListener('click', function() {
+        if (!isRecording) {
+            iniciarGravacao();
+        } else {
+            pararGravacao();
+        }
+    });
 }
 
-function sendMessage() {
-    const messageInput = document.getElementById('message-input');
-    const message = messageInput.value.trim();
+function enviarMensagem(texto) {
+    const chatMessages = document.getElementById('chat-mensagens');
+    const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     
-    if (message === '') return;
-    
-    const chatBody = document.getElementById('chat-body');
-    
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'msg msg-entregador';
-    
-    messageDiv.innerHTML = `
-        <i class="bi bi-person-circle fs-4"></i>
-        <div class="texto">${message}</div>
-        <span class="msg-hora">${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}</span>
+    const mensagemDiv = document.createElement('div');
+    mensagemDiv.className = 'mensagem mensagem-enviada';
+    mensagemDiv.innerHTML = `
+        <div class="mensagem-conteudo">
+            <div class="mensagem-balao mensagem-balao-enviada">
+                <p>${texto}</p>
+            </div>
+            <div class="mensagem-status">
+                <span class="mensagem-hora">${horaAtual}</span>
+                <span class="material-symbols-outlined">done_all</span>
+            </div>
+        </div>
     `;
     
-    chatBody.appendChild(messageDiv);
-    messageInput.value = '';
-    chatBody.scrollTop = chatBody.scrollHeight;
+    chatMessages.appendChild(mensagemDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
     
     setTimeout(() => {
-        const responseDiv = document.createElement('div');
-        responseDiv.className = 'msg msg-cliente';
+        const respostas = [
+            "Entendido! O entregador já está a caminho.",
+            "Perfeito! Vamos atualizar o status do seu pedido.",
+            "Obrigado pela informação!",
+            "Seu pedido está sendo preparado.",
+            "O entregador está na sua região."
+        ];
         
-        responseDiv.innerHTML = `
-            <img src="https://i.postimg.cc/9MKDXQKZ/2025-08-24-15-05.png" alt="Cliente">
-            <div class="texto">Olá, em que posso ajudar?</div>
-            <span class="msg-hora">${new Date().getHours()}:${(new Date().getMinutes() + 1).toString().padStart(2, '0')}</span>
+        const respostaAleatoria = respostas[Math.floor(Math.random() * respostas.length)];
+        const horaResposta = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        
+        const respostaDiv = document.createElement('div');
+        respostaDiv.className = 'mensagem mensagem-recebida';
+        respostaDiv.innerHTML = `
+            <div class="mensagem-foto" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo2WOsnviTirPXViHLuIQx6Fc7P9RB04Mt2QW0Ne2r2uObuBI99pgO9Rwy0EMxZSQ8A90BNE-k-TPjnd6so7pDr1NlkwLqUCCBP0u8h704f5m159sd2XuCmX3Od-M3z99hL3voS5JZNWz7kNUFU6W9gmirlsY_s-eciw9XgtG1opIMFE6hWXIHKonrviDD-aYh6TLvnPlwTgJHKUCHDen1hK_Eut_AKTjhjZGNVC13TpeVDgBM0lV_YLF_WUdfQKipbGdIrG9T52c')"></div>
+            <div class="mensagem-conteudo">
+                <div class="mensagem-balao">
+                    <p>${respostaAleatoria}</p>
+                </div>
+                <span class="mensagem-hora">${horaResposta}</span>
+            </div>
         `;
         
-        chatBody.appendChild(responseDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
+        chatMessages.appendChild(respostaDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }, 2000);
 }
 
-async function toggleAudioRecording() {
-    if (isRecording) {
-        stopAudioRecording();
-    } else {
-        await startAudioRecording();
-    }
-}
-
-async function startAudioRecording() {
+async function iniciarGravacao() {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+        const recordBtn = document.getElementById('record-btn');
+        audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(audioStream);
         audioChunks = [];
-
-        mediaRecorder.ondataavailable = (event) => {
-            audioChunks.push(event.data);
-        };
-
+        
+        mediaRecorder.ondataavailable = event => { audioChunks.push(event.data); };
         mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            sendAudioMessage(audioBlob);
-            stream.getTracks().forEach(track => track.stop());
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            exibirAudioGravado(audioBlob);
+            audioStream.getTracks().forEach(track => track.stop());
         };
-
+        
         mediaRecorder.start();
         isRecording = true;
-        
-        document.getElementById('recording-indicator').style.display = 'flex';
-        
+        recordBtn.classList.add('gravando');
+        recordBtn.innerHTML = '<span class="material-symbols-outlined">stop</span>';
     } catch (error) {
         console.error('Erro ao acessar microfone:', error);
-        alert('Não foi possível acessar o microfone. Verifique as permissões.');
+        alert('Não foi possível acessar o microfone. Por favor, verifique as permissões.');
     }
 }
 
-function stopAudioRecording() {
+function pararGravacao() {
     if (mediaRecorder && isRecording) {
         mediaRecorder.stop();
         isRecording = false;
-        
-        document.getElementById('recording-indicator').style.display = 'none';
+        const recordBtn = document.getElementById('record-btn');
+        recordBtn.classList.remove('gravando');
+        recordBtn.innerHTML = '<span class="material-symbols-outlined">mic</span>';
     }
 }
 
-function sendAudioMessage(audioBlob) {
-    const chatBody = document.getElementById('chat-body');
+function exibirAudioGravado(audioBlob) {
+    const chatMessages = document.getElementById('chat-mensagens');
+    const horaAtual = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     
-    const messageDiv = document.createElement('div');
-    messageDiv.className = 'msg msg-entregador';
-    
-    const audioUrl = URL.createObjectURL(audioBlob);
-    
-    messageDiv.innerHTML = `
-        <i class="bi bi-person-circle fs-4"></i>
-        <div class="texto audio-message" onclick="playAudio(this)" data-audio-url="${audioUrl}">
-            <i class="bi bi-play-fill"></i> 
-            <span>Áudio</span>
-            <div class="audio-duration">0:05</div>
+    const audioDiv = document.createElement('div');
+    audioDiv.className = 'mensagem mensagem-enviada';
+    audioDiv.innerHTML = `
+        <div class="mensagem-conteudo">
+            <div class="mensagem-balao mensagem-balao-enviada">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">mic</span>
+                    <span>Áudio gravado</span>
+                    <span class="material-symbols-outlined audio-play" style="font-size: 16px; margin-left: auto; cursor: pointer;">play_arrow</span>
+                </div>
+            </div>
+            <div class="mensagem-status">
+                <span class="mensagem-hora">${horaAtual}</span>
+                <span class="material-symbols-outlined">done_all</span>
+            </div>
         </div>
-        <span class="msg-hora">${new Date().getHours()}:${new Date().getMinutes().toString().padStart(2, '0')}</span>
     `;
     
-    chatBody.appendChild(messageDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function playAudio(element) {
-    const audioUrl = element.getAttribute('data-audio-url');
+    chatMessages.appendChild(audioDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
     
-    if (audioElement) {
-        audioElement.pause();
-        document.querySelectorAll('.audio-message').forEach(msg => {
-            msg.classList.remove('playing');
-            msg.querySelector('i').className = 'bi bi-play-fill';
-        });
-    }
+    const audioElement = new Audio(URL.createObjectURL(audioBlob));
+    const playButton = audioDiv.querySelector('.audio-play');
     
-    audioElement = new Audio(audioUrl);
-    
-    element.classList.add('playing');
-    element.querySelector('i').className = 'bi bi-pause-fill';
-    
-    audioElement.play();
-    
-    audioElement.onended = () => {
-        element.classList.remove('playing');
-        element.querySelector('i').className = 'bi bi-play-fill';
-    };
-    
-    audioElement.onpause = () => {
-        element.classList.remove('playing');
-        element.querySelector('i').className = 'bi bi-play-fill';
-    };
-}
-
-function showEditProfile() {
-    showScreen('screen9');
-    
-    document.getElementById('edit-name').value = "Mariana";
-    document.getElementById('edit-phone').value = "(89) 994856218";
-    document.getElementById('edit-email').value = "mariana@email.com";
-    document.getElementById('edit-cep').value = "64605500";
-    document.getElementById('edit-address').value = "Rua Projetada, 132 Quadra 5, Casa 15";
-    document.getElementById('edit-neighborhood').value = "Bairro Pantanal, Picos - PI";
-    document.getElementById('edit-password').value = "";
-    document.getElementById('edit-confirm-password').value = "";
-}
-
-function saveProfile() {
-    const name = document.getElementById('edit-name').value.trim();
-    const phone = document.getElementById('edit-phone').value.trim();
-    const email = document.getElementById('edit-email').value.trim();
-    const cep = document.getElementById('edit-cep').value.trim();
-    const address = document.getElementById('edit-address').value.trim();
-    const neighborhood = document.getElementById('edit-neighborhood').value.trim();
-
-    if (!name || !phone || !email || !cep || !address || !neighborhood) {
-        alert('Por favor, preencha todos os campos obrigatórios.');
-        return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('Por favor, insira um email válido.');
-        return;
-    }
-
-    const newPassword = document.getElementById('edit-password').value;
-    const confirmPassword = document.getElementById('edit-confirm-password').value;
-    
-    if (newPassword || confirmPassword) {
-        if (newPassword !== confirmPassword) {
-            alert('As senhas não coincidem.');
-            return;
-        }
-        if (newPassword.length < 6) {
-            alert('A senha deve ter pelo menos 6 caracteres.');
-            return;
-        }
-    }
-
-    showScreen('screen7');
-}
-
-async function searchCEP(cep) {
-    if (cep.length === 8) {
-        try {
-            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-            const data = await response.json();
-            
-            if (!data.erro) {
-                document.getElementById('edit-address').value = `${data.logradouro}, ${data.complemento || ''}`.trim();
-                document.getElementById('edit-neighborhood').value = `${data.bairro}, ${data.localidade} - ${data.uf}`;
+    if (playButton) {
+        playButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (audioElement.paused) {
+                audioElement.play();
+                this.textContent = 'pause';
             } else {
-                alert('CEP não encontrado.');
-            }
-        } catch (error) {
-            console.error('Erro ao buscar CEP:', error);
-        }
-    }
-}
-
-function changeProfilePicture() {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.style.display = 'none';
-    
-    fileInput.onchange = function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            if (file.size > 5 * 1024 * 1024) {
-                alert('A imagem deve ser menor que 5MB.');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const profilePicture = document.getElementById('profile-picture');
-                profilePicture.src = e.target.result;
-                
-                const profilePicMain = document.querySelector('#screen7 .top-bar img');
-                if (profilePicMain) {
-                    profilePicMain.src = e.target.result;
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-    
-    document.body.appendChild(fileInput);
-    fileInput.click();
-    document.body.removeChild(fileInput);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const messageInput = document.getElementById('message-input');
-    if (messageInput) {
-        messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
+                audioElement.pause();
+                this.textContent = 'play_arrow';
             }
         });
     }
     
-    document.addEventListener('click', function(e) {
-        const indicator = document.getElementById('recording-indicator');
-        if (isRecording && indicator && !indicator.contains(e.target) && 
-            !e.target.closest('.audio-btn')) {
-            stopAudioRecording();
+    audioElement.onended = function() {
+        if (playButton) playButton.textContent = 'play_arrow';
+    };
+    
+    setTimeout(() => {
+        const horaResposta = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const respostaDiv = document.createElement('div');
+        respostaDiv.className = 'mensagem mensagem-recebida';
+        respostaDiv.innerHTML = `
+            <div class="mensagem-foto" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo2WOsnviTirPXViHLuIQx6Fc7P9RB04Mt2QW0Ne2r2uObuBI99pgO9Rwy0EMxZSQ8A90BNE-k-TPjnd6so7pDr1NlkwLqUCCBP0u8h704f5m159sd2XuCmX3Od-M3z99hL3voS5JZNWz7kNUFU6W9gmirlsY_s-eciw9XgtG1opIMFE6hWXIHKonrviDD-aYh6TLvnPlwTgJHKUCHDen1hK_Eut_AKTjhjZGNVC13TpeVDgBM0lV_YLF_WUdfQKipbGdIrG9T52c')"></div>
+            <div class="mensagem-conteudo">
+                <div class="mensagem-balao">
+                    <p>Áudio recebido! Vou verificar isso.</p>
+                </div>
+                <span class="mensagem-hora">${horaResposta}</span>
+            </div>
+        `;
+        chatMessages.appendChild(respostaDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 3000);
+}
+
+// SWITCH DA LOJA
+let switchInicializado = false;
+
+function inicializarSwitchLoja() {
+    if (switchInicializado) return;
+    const switchBtn = document.getElementById("switch");
+    const statusText = document.getElementById("status-text");
+    
+    if (switchBtn && statusText && !switchBtn.hasListener) {
+        switchBtn.onclick = () => {
+            switchBtn.classList.toggle("off");
+            statusText.textContent = switchBtn.classList.contains("off") ? "Fechado" : "Aberto";
+        };
+        switchBtn.hasListener = true;
+        switchInicializado = true;
+    }
+}
+
+// ACEITAR PEDIDO
+function aceitarPedido(botao) {
+    const pedidoDiv = botao.closest('.loja-pedido');
+    if (pedidoDiv) {
+        botao.textContent = 'Aceito!';
+        botao.style.background = '#10b981';
+        botao.disabled = true;
+        
+        const pendentesCard = document.querySelector('.loja-card:first-child h2');
+        if (pendentesCard) {
+            let pendentes = parseInt(pendentesCard.textContent);
+            if (!isNaN(pendentes) && pendentes > 0) pendentesCard.textContent = pendentes - 1;
         }
+        
+        const preparoCard = document.querySelector('.loja-card:last-child h2');
+        if (preparoCard) {
+            let preparo = parseInt(preparoCard.textContent);
+            if (!isNaN(preparo)) preparoCard.textContent = preparo + 1;
+        }
+    }
+}
+
+// BUSCA CARDÁPIO
+function inicializarBuscaCardapio() {
+    const buscaInput = document.getElementById('cardapio-busca');
+    if (!buscaInput || buscaInput.hasListener) return;
+    
+    buscaInput.addEventListener('input', function(e) {
+        const termo = e.target.value.toLowerCase();
+        const items = document.querySelectorAll('#cardapio-content .cardapio-item');
+        const categorias = document.querySelectorAll('#cardapio-content h3');
+        
+        items.forEach(item => {
+            const nome = item.querySelector('h4').textContent.toLowerCase();
+            const descricao = item.querySelector('p').textContent.toLowerCase();
+            item.style.display = (termo === '' || nome.includes(termo) || descricao.includes(termo)) ? 'flex' : 'none';
+        });
+        
+        categorias.forEach(categoria => {
+            let nextItem = categoria.nextElementSibling;
+            let hasVisibleItem = false;
+            while (nextItem && nextItem.classList && nextItem.classList.contains('cardapio-item')) {
+                if (nextItem.style.display !== 'none') { hasVisibleItem = true; break; }
+                nextItem = nextItem.nextElementSibling;
+            }
+            categoria.style.display = (hasVisibleItem || termo === '') ? 'block' : 'none';
+        });
     });
+    buscaInput.hasListener = true;
+}
+
+// BUSCA MENSAGENS
+function inicializarBuscaMensagens() {
+    const buscaInput = document.getElementById('mensagens-busca-input');
+    if (!buscaInput || buscaInput.hasListener) return;
+    
+    buscaInput.addEventListener('input', function(e) {
+        const termo = e.target.value.toLowerCase();
+        const items = document.querySelectorAll('#mensagens-lista .mensagem-item');
+        
+        items.forEach(item => {
+            const nome = item.getAttribute('data-nome')?.toLowerCase() || '';
+            const id = item.getAttribute('data-id') || '';
+            const preview = item.querySelector('.mensagem-preview')?.textContent.toLowerCase() || '';
+            item.style.display = (termo === '' || nome.includes(termo) || id.includes(termo) || preview.includes(termo)) ? 'flex' : 'none';
+        });
+    });
+    buscaInput.hasListener = true;
+}
+
+function abrirChatCliente(nome, id) {
+    alert(`Abrindo conversa com ${nome} (Pedido #${id})`);
+}
+
+function inicializarCliquesMensagens() {
+    const mensagensItems = document.querySelectorAll('#mensagens-lista .mensagem-item');
+    mensagensItems.forEach(item => {
+        if (item.hasClickListener) return;
+        item.addEventListener('click', function() {
+            abrirChatCliente(this.getAttribute('data-nome'), this.getAttribute('data-id'));
+        });
+        item.hasClickListener = true;
+    });
+}
+
+function inicializarAjustes() {
+    console.log('Tela de Ajustes carregada');
+}
+
+// TOGGLE VISIBILIDADE DE SENHA
+document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-visibilidade')) {
+        const btn = e.target.closest('.btn-visibilidade');
+        const input = btn.parentElement.querySelector('input[type="password"], input[type="text"]');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (!input || !icon) return;
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = 'visibility';
+        } else {
+            input.type = 'password';
+            icon.textContent = 'visibility_off';
+        }
+    }
+});
+
+// INICIALIZAÇÃO
+window.addEventListener('DOMContentLoaded', function() {
+    mudarTela('tela-1');
+    const buscaPesquisa = document.querySelector('#tela-6 .pesquisa-busca input');
+    if (buscaPesquisa) {
+        buscaPesquisa.addEventListener('input', function(e) {
+            console.log('Pesquisando:', this.value);
+        });
+    }
+});
+
+document.addEventListener('visibilitychange', function() {
+    if (document.hidden && isRecording) pararGravacao();
+});
+
+document.addEventListener('submit', function(e) {
+    e.preventDefault();
 });
 
